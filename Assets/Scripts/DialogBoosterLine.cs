@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DialogBoosterLine", menuName = "Scriptable Objects/DialogBoosterLine")]
+[CreateAssetMenu(fileName = "DialogBoosterLine", menuName = "DialogToolkit/TheBoosterLine")]
 public class DialogBoosterLine : DialogAbstract
 {
     [SerializeField]DialogBoostedLine dialogBoostedLine;

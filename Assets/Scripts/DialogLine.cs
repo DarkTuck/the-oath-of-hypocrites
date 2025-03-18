@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DialogLine", menuName = "Scriptable Objects/DialogLine")]
+[CreateAssetMenu(fileName = "DialogLine", menuName = "DialogToolkit/NormalLine")]
 public class DialogLine : DialogAbstract
 {
 
