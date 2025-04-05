@@ -10,8 +10,6 @@ public class DialogScript : MonoBehaviour
 
     async void SayLine(int index)
     {
-        try
-        {
             DialogAbstract line = dialogList.GetLine(index);
             line.SayLine();
             await Wait();
@@ -19,11 +17,7 @@ public class DialogScript : MonoBehaviour
             line.Answer();
             await Wait();
             dialogList.RemoveLine(line);
-        }
-        catch
-        {
-            Debug.LogError("Something went wrong");
-        }
+
     }
 
     private async Task Wait() {
