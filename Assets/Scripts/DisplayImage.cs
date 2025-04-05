@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 using NaughtyAttributes;
 using System.Threading;
 using System.Threading.Tasks;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class DisplayImage : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class DisplayImage : MonoBehaviour
     [SerializeField] string text;
     [SerializeField] bool showNext;
     [SerializeField][ShowIf("showNext")] GameObject secondImage;
+    [SerializeField]UnityEvent onPress;
     Actions actions;
 
     async Task GenerateActions()
@@ -60,6 +63,7 @@ public class DisplayImage : MonoBehaviour
         {
             displayText.gameObject.SetActive(false);
         }
+        onPress.Invoke();
         actions.Player.Interact.Disable();
         actions.Player.Interact.performed -= HideImageInput;
         
