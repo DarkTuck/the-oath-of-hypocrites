@@ -2,15 +2,15 @@
 using UnityEngine;
 using TMPro;
 using Ink.Runtime;
-using Unity.Multiplayer.Center.Common;
 using UnityEngine.InputSystem;
 
 public class InkDialogManager : MonoBehaviour
 {
-    [SerializeField] GameObject dialogPanel;
+    [SerializeField] GameObject dialogPanel,ContinueButton;
     [SerializeField] TextMeshProUGUI dialogText;
     [SerializeField] GameObject[] dialogButton;
     [SerializeField] TextMeshProUGUI[] dialogButtonText;
+    [SerializeField] PlayerMovement playerMovement;
     private static InkDialogManager instance;
     private Story currentStory;
     public bool dialogOpen { get; private set; } = false;
@@ -37,11 +37,12 @@ public class InkDialogManager : MonoBehaviour
 
     private void EnterDialog(TextAsset inkText)
     {
-        actions.Player.Interact.Enable();
-        actions.Player.Interact.performed += InputContinueStory;
+        actions.Player.ContinueDialog.Enable();
+        actions.Player.ContinueDialog.performed += InputContinueStory;
         currentStory = new Story(inkText.text);
         dialogOpen = true;
         dialogPanel.SetActive(true);
+        playerMovement.enabled = false;
         ContinueStory();
 
     }
@@ -50,6 +51,11 @@ public class InkDialogManager : MonoBehaviour
     {
         instance.currentStory.ChooseChoiceIndex(choice);
         instance.ContinueStory();
+    }
+
+    public void ContinueStoryPublic()
+    {
+        ContinueStory();
     }
     private void ContinueStory()
     {     
@@ -71,20 +77,21 @@ public class InkDialogManager : MonoBehaviour
 
     void DisplayChoice()
     {
-        List<Choice> curentChoice = currentStory.currentChoices;
-        if (curentChoice.Count > dialogButton.Length)
+        List<Choice> currentChoice = currentStory.currentChoices;
+        ContinueButton.SetActive(currentChoice.Count <= 0);
+        if (currentChoice.Count > dialogButton.Length)
         {
             Debug.LogError("Too many choices");
         }
 
-        for (int i = 0; i <= curentChoice.Count-1; i++)
+        for (int i = 0; i <= currentChoice.Count-1; i++)
         {
             dialogButton[i].SetActive(true);
-            dialogButtonText[i].text = curentChoice[i].text;
+            dialogButtonText[i].text = currentChoice[i].text;
 
         }
 
-        for (int i = dialogButton.Length-1; i>=curentChoice.Count;i-- )
+        for (int i = dialogButton.Length-1; i>=currentChoice.Count;i-- )
         {
             dialogButton[i].SetActive(false);
             dialogButtonText[i].text = "";
@@ -96,7 +103,8 @@ public class InkDialogManager : MonoBehaviour
         dialogPanel.SetActive(false);
         dialogOpen = false;
         dialogText.text = "";
-        actions.Player.Interact.Disable();
-        actions.Player.Interact.performed -= InputContinueStory;
+        actions.Player.ContinueDialog.Disable();
+        actions.Player.ContinueDialog.performed -= InputContinueStory;
+        playerMovement.enabled = true;
     }
 }

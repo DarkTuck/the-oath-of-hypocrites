@@ -50,6 +50,7 @@ public class DisplayImage : MonoBehaviour
 
     void HideImageInput(InputAction.CallbackContext context)
     {
+        onPress.Invoke();
         HideImage();
     }
    public void HideImage()
@@ -63,7 +64,6 @@ public class DisplayImage : MonoBehaviour
         {
             displayText.gameObject.SetActive(false);
         }
-        onPress.Invoke();
         actions.Player.Interact.Disable();
         actions.Player.Interact.performed -= HideImageInput;
         
