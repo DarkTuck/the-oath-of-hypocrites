@@ -9,6 +9,23 @@ public class BattleManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerHealthText, enemyHealthText, damageText;
     bool isPlayerTurn = true;
 
+void OnEnable()
+{
+    playerHealthText.text = playerHealth.ToString();
+    playerHealthText.gameObject.SetActive(true);
+    enemyHealthText.gameObject.SetActive(true);
+    enemyHealthText.text = enemyHealth.ToString();
+    damageText.text = "";
+    damageText.gameObject.SetActive(true);
+}
+
+void OnDisable()
+{
+    playerHealthText.gameObject.SetActive(false);
+    playerHealthText.gameObject.SetActive(false);
+    damageText.gameObject.SetActive(false);
+}
+
 public async void DamageEnemy()
     {
         if (isPlayerTurn)
@@ -50,10 +67,16 @@ public async void DamageEnemy()
     {
         Time.timeScale = 0;
         gameOverPanel.SetActive(true);
+        playerHealthText.gameObject.SetActive(false);
+        enemyHealthText.gameObject.SetActive(false);
+        damageText.gameObject.SetActive(false);
     }
 
     void WinCombat()
     {
         winPanel.SetActive(true);
+        playerHealthText.gameObject.SetActive(false);
+        enemyHealthText.gameObject.SetActive(false);
+        damageText.gameObject.SetActive(false);
     }
 }
